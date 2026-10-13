@@ -3,118 +3,288 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Night City | By Humanns9779</title>
+    <meta name="description" content="Night City — ламповый ванильный Minecraft-сервер без ПВП: строительство, общение и спокойная игра.">
+    <meta name="theme-color" content="#0c0c0e">
+    <title>Night City — ванильный Minecraft без ПВП</title>
     <style>
-        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Segoe UI', sans-serif; }
-        html { scroll-behavior: smooth; }
-        body { background-color: #0c0c0e; color: #d1d5db; overflow-x: hidden; position: relative; }
-        body::before { content: ""; position: fixed; top: -10%; right: -10%; width: 500px; height: 500px; background: radial-gradient(circle, rgba(168, 85, 247, 0.15) 0%, transparent 70%); filter: blur(60px); z-index: -1; }
-        body::after { content: ""; position: fixed; bottom: -10%; left: -10%; width: 600px; height: 600px; background: radial-gradient(circle, rgba(192, 132, 252, 0.1) 0%, transparent 70%); filter: blur(80px); z-index: -1; }
-        header { background: rgba(12, 12, 14, 0.8); backdrop-filter: blur(12px); padding: 20px 50px; display: flex; justify-content: space-between; align-items: center; position: fixed; width: 100%; top: 0; z-index: 1000; border-bottom: 1px solid rgba(255, 255, 255, 0.03); }
-        .logo-block { display: flex; align-items: center; gap: 15px; }
-        .logo { font-size: 22px; font-weight: 900; text-transform: uppercase; letter-spacing: 2px; color: #ffffff; }
-        .logo span { color: #c084fc; }
-        nav a { color: #9ca3af; text-decoration: none; margin-left: 25px; font-weight: 600; font-size: 14px; letter-spacing: 1px; transition: 0.3s; }
-        nav a:hover { color: #c084fc; text-shadow: 0 0 8px rgba(192, 132, 252, 0.6); }
-        .hero { height: 100vh; display: flex; flex-direction: column; justify-content: center; align-items: center; text-align: center; padding: 20px; position: relative; }
-        .hero h1 { font-size: 72px; font-weight: 950; letter-spacing: 4px; margin-bottom: 20px; color: #ffffff; text-shadow: 0 0 30px rgba(192, 132, 252, 0.3); }
-        .hero p { font-size: 20px; color: #9ca3af; margin-bottom: 40px; max-width: 650px; line-height: 1.6; }
+        :root {
+            --bg: #0c0c0e;
+            --surface: rgba(17, 17, 21, 0.6);
+            --text: #d1d5db;
+            --muted: #9ca3af;
+            --accent: #c084fc;
+            --ok: #10b981;
+            --bad: #ef4444;
+            --warn: #94a3b8;
+            --discord: #5865f2;
+        }
+        *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+        html { scroll-behavior: smooth; scroll-padding-top: 80px; }
+        body {
+            font-family: 'Segoe UI', system-ui, -apple-system, Roboto, sans-serif;
+            background: var(--bg); color: var(--text);
+            overflow-x: hidden; -webkit-font-smoothing: antialiased;
+        }
+        body::before, body::after { content: ""; position: fixed; border-radius: 50%; z-index: -1; pointer-events: none; }
+        body::before { top: -10%; right: -10%; width: 500px; height: 500px; background: radial-gradient(circle, rgba(168, 85, 247, .15), transparent 70%); filter: blur(60px); }
+        body::after { bottom: -10%; left: -10%; width: 600px; height: 600px; background: radial-gradient(circle, rgba(192, 132, 252, .1), transparent 70%); filter: blur(80px); }
+
+        :focus-visible { outline: 2px solid var(--accent); outline-offset: 3px; }
+
+        /* Header */
+        header {
+            position: fixed; top: 0; left: 0; width: 100%; z-index: 1000;
+            display: flex; justify-content: space-between; align-items: center; gap: 16px;
+            padding: 18px clamp(16px, 4vw, 50px);
+            background: rgba(12, 12, 14, .8); backdrop-filter: blur(12px);
+            border-bottom: 1px solid rgba(255, 255, 255, .03);
+        }
+        .logo { font-size: 22px; font-weight: 900; text-transform: uppercase; letter-spacing: 2px; color: #fff; text-decoration: none; }
+        .logo span { color: var(--accent); }
+        nav { display: flex; gap: clamp(14px, 3vw, 25px); }
+        nav a { color: var(--muted); text-decoration: none; font-weight: 600; font-size: 14px; letter-spacing: 1px; transition: color .3s, text-shadow .3s; }
+        nav a:hover { color: var(--accent); text-shadow: 0 0 8px rgba(192, 132, 252, .6); }
+
+        /* Hero */
+        .hero {
+            min-height: 100vh; min-height: 100svh;
+            display: flex; flex-direction: column; justify-content: center; align-items: center;
+            text-align: center; padding: 110px 20px 60px;
+        }
+        .hero h1 { font-size: clamp(40px, 10vw, 72px); font-weight: 900; letter-spacing: 4px; margin-bottom: 20px; color: #fff; text-shadow: 0 0 30px rgba(192, 132, 252, .3); }
+        .hero p { font-size: clamp(16px, 2.5vw, 20px); color: var(--muted); margin-bottom: 40px; max-width: 650px; line-height: 1.6; }
         .cta-container { display: flex; gap: 20px; flex-wrap: wrap; justify-content: center; margin-bottom: 30px; }
-        .btn { padding: 16px 38px; border-radius: 12px; cursor: pointer; font-weight: 700; font-size: 15px; letter-spacing: 1px; transition: all 0.3s ease; text-decoration: none; display: inline-flex; align-items: center; gap: 10px; }
-        .ip-box { background: #111115; border: 2px solid #c084fc; color: #ffffff; box-shadow: 0 0 20px rgba(192, 132, 252, 0.2); }
-        .ip-box:hover { transform: translateY(-2px); box-shadow: 0 0 30px rgba(192, 132, 252, 0.5); background: #c084fc; }
-        .discord-btn { background: #5865F2; border: 2px solid #5865F2; color: #ffffff; }
-        .discord-btn:hover { transform: translateY(-2px); background: #4752c4; border-color: #4752c4; box-shadow: 0 0 25px rgba(88, 101, 242, 0.4); }
-        .status-container { background: rgba(17, 17, 21, 0.6); border: 1px solid rgba(255, 255, 255, 0.05); border-radius: 14px; padding: 15px 40px; font-size: 15px; font-weight: 700; text-transform: uppercase; letter-spacing: 1.5px; backdrop-filter: blur(8px); box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3); display: inline-flex; align-items: center; gap: 10px; color: #94a3b8; }
-        .status-dot { width: 8px; height: 8px; border-radius: 50%; display: inline-block; background: #94a3b8; box-shadow: 0 0 8px #94a3b8; }
+
+        .btn {
+            padding: 16px 38px; border-radius: 12px; cursor: pointer;
+            font: inherit; font-weight: 700; font-size: 15px; letter-spacing: 1px;
+            transition: transform .3s, box-shadow .3s, background .3s, border-color .3s;
+            text-decoration: none; display: inline-flex; align-items: center; justify-content: center; gap: 10px; color: #fff;
+        }
+        .btn:hover { transform: translateY(-2px); }
+        .ip-box { background: #111115; border: 2px solid var(--accent); box-shadow: 0 0 20px rgba(192, 132, 252, .2); }
+        .ip-box:hover { box-shadow: 0 0 30px rgba(192, 132, 252, .5); background: var(--accent); color: #0c0c0e; }
+        .discord-btn { background: var(--discord); border: 2px solid var(--discord); }
+        .discord-btn:hover { background: #4752c4; border-color: #4752c4; box-shadow: 0 0 25px rgba(88, 101, 242, .4); }
+
+        /* Server status */
+        .status-container {
+            display: inline-flex; align-items: center; gap: 10px;
+            background: var(--surface); border: 1px solid rgba(255, 255, 255, .05); border-radius: 14px;
+            padding: 15px 40px; font-size: 15px; font-weight: 700; text-transform: uppercase; letter-spacing: 1.5px;
+            backdrop-filter: blur(8px); box-shadow: 0 4px 20px rgba(0, 0, 0, .3);
+            color: var(--warn); transition: color .3s, border-color .3s;
+        }
+        .status-dot { width: 8px; height: 8px; border-radius: 50%; background: currentColor; box-shadow: 0 0 10px currentColor; }
+        .status-container[data-state="online"] { color: var(--ok); border-color: rgba(16, 185, 129, .3); }
+        .status-container[data-state="offline"],
+        .status-container[data-state="error"] { color: var(--bad); border-color: rgba(239, 68, 68, .3); }
+
+        /* Features */
         .features-section { padding: 100px 20px; max-width: 1100px; margin: 0 auto; }
-        .features { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 25px; }
-        .card { background: rgba(17, 17, 21, 0.6); border: 1px solid rgba(255, 255, 255, 0.02); border-radius: 16px; padding: 40px; transition: all 0.3s ease; backdrop-filter: blur(8px); }
-        .card:hover { border-color: rgba(192, 132, 252, 0.3); transform: translateY(-4px); box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5); }
+        .features { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 300px), 1fr)); gap: 25px; }
+        .card { background: var(--surface); border: 1px solid rgba(255, 255, 255, .02); border-radius: 16px; padding: 40px; transition: border-color .3s, transform .3s, box-shadow .3s; backdrop-filter: blur(8px); }
+        .card:hover { border-color: rgba(192, 132, 252, .3); transform: translateY(-4px); box-shadow: 0 10px 30px rgba(0, 0, 0, .5); }
         .card-title-block { display: flex; align-items: center; gap: 15px; margin-bottom: 20px; }
-        .card-dot { width: 8px; height: 8px; background: #c084fc; border-radius: 50%; box-shadow: 0 0 8px #c084fc; }
-        .card h3 { font-size: 20px; color: #ffffff; font-weight: 700; letter-spacing: 0.5px; }
-        .card p { color: #9ca3af; line-height: 1.7; font-size: 15px; }
-        footer { background: #08080a; padding: 40px 20px; text-align: center; color: #4b5563; font-size: 14px; border-top: 1px solid rgba(255, 255, 255, 0.02); }
-        .credits span { color: #ffffff; font-weight: 700; }
-        .credits .brand { color: #c084fc; text-shadow: 0 0 5px rgba(192, 132, 252, 0.5); }
+        .card-dot { flex: none; width: 8px; height: 8px; background: var(--accent); border-radius: 50%; box-shadow: 0 0 8px var(--accent); }
+        .card h3 { font-size: 20px; color: #fff; font-weight: 700; letter-spacing: .5px; }
+        .card p { color: var(--muted); line-height: 1.7; font-size: 15px; }
+
+        /* Footer */
+        footer { background: #08080a; padding: 40px 20px; text-align: center; color: #6b7280; font-size: 14px; line-height: 1.8; border-top: 1px solid rgba(255, 255, 255, .02); }
+        .credits span { color: #fff; font-weight: 700; }
+        .credits .brand { color: var(--accent); text-shadow: 0 0 5px rgba(192, 132, 252, .5); }
+
+        /* Toast */
+        .toast {
+            position: fixed; left: 50%; bottom: 30px; z-index: 2000;
+            transform: translate(-50%, 20px); opacity: 0; pointer-events: none;
+            background: #111115; color: #fff; border: 1px solid var(--accent); border-radius: 12px;
+            padding: 14px 24px; font-size: 14px; max-width: calc(100% - 32px); text-align: center;
+            box-shadow: 0 0 25px rgba(192, 132, 252, .3); transition: opacity .3s, transform .3s;
+        }
+        .toast.show { opacity: 1; transform: translate(-50%, 0); }
+
+        @media (max-width: 560px) {
+            header { padding: 14px 16px; }
+            .logo { font-size: 18px; }
+            nav a { font-size: 12px; letter-spacing: .5px; }
+            .btn { width: 100%; padding: 15px 24px; }
+            .cta-container { width: 100%; max-width: 360px; flex-direction: column; }
+            .status-container { padding: 12px 22px; font-size: 13px; }
+            .card { padding: 28px; }
+        }
+        @media (prefers-reduced-motion: reduce) {
+            html { scroll-behavior: auto; }
+            *, *::before, *::after { transition: none !important; }
+        }
     </style>
 </head>
 <body>
     <header>
-        <div class="logo-block"><div class="logo">Night<span>City</span></div></div>
-        <nav><a href="#hero">Главная</a><a href="#features">О проекте</a><a href="https://discord.gg" target="_blank">Discord</a></nav>
+        <a class="logo" href="#hero">Night<span>City</span></a>
+        <nav aria-label="Основная навигация">
+            <a href="#hero">Главная</a>
+            <a href="#features">О проекте</a>
+            <a href="https://discord.gg/hawNerGWH7" target="_blank" rel="noopener noreferrer">Discord</a>
+        </nav>
     </header>
-    <section class="hero" id="hero">
-        <h1>NIGHT CITY</h1>
-        <p>Атмосферный ламповый сервер. Только чистая ванилла, общение, масштабное строительство и полное отсутствие ПВП. Твой идеальный мир для отдыха.</p>
-        <div class="cta-container">
-            <div class="btn ip-box" onclick="copyIP()">Скопировать IP: <span id="server-ip">NightCity.wellduck.org</span></div>
-            <a href="https://discord.gg" target="_blank" class="btn discord-btn">Подать заявку</a>
-        </div>
-        <div id="status-wrapper" class="status-container">
-        <!-- Блок статуса: чистый HTML без ломающихся скриптов и внешних картинок -->
-        <div class="status-container" style="border: 1px solid rgba(16, 185, 129, 0.2); color: #10b981; margin-top: 30px;">
-            <span class="status-dot" style="background: #10b981; box-shadow: 0 0 10px #10b981;"></span>
-            <span>Сервер запущен • 1.21+</span>
-        </div>
-    </section>
 
-    <!-- Фишки сервера -->
-    <section class="features-section" id="features">
+    <main>
+        <section class="hero" id="hero">
+            <h1>NIGHT CITY</h1>
+            <p>Атмосферный ламповый сервер. Только чистая ванилла, общение, масштабное строительство и полное отсутствие ПВП. Твой идеальный мир для отдыха.</p>
 
-ss="features">
-            <div class="card">
-                <div class="card-title-block"><div class="card-dot"></div><h3>Абсолютный мир</h3></div>
-                <p>У нас полностью выключено ПВП и запрещен любой гриф. Строй огромные города и автоматические фермы — твои ресурсы всегда в безопасности.</p>
+            <div class="cta-container">
+                <button type="button" class="btn ip-box" id="copy-btn">
+                    Скопировать IP: <span id="server-ip">NightCity.wellduck.org</span>
+                </button>
+                <a href="https://discord.gg/hawNerGWH7" target="_blank" rel="noopener noreferrer" class="btn discord-btn">Подать заявку</a>
             </div>
-            <div class="card">
-                <div class="card-title-block"><div class="card-dot"></div><h3>Оригинальный баланс</h3></div>
-                <p>Чистая ванилла без ломающих плагинов, кастомных валют и цветных админских префиксов. Тот самый Майнкрафт, который мы любим.</p>
+
+            <div id="status-wrapper" class="status-container" data-state="loading" role="status" aria-live="polite">
+                <span class="status-dot" aria-hidden="true"></span>
+                <span id="status-text">Проверяем сервер…</span>
             </div>
-            <div class="card">
-                <div class="card-title-block"><div class="card-dot"></div><h3>Своё комьюнити</h3></div>
-                <p>Объединяйся с друзьями, координируй проекты через Дискорд, делись ресурсами и строй историю Найт-Сити вместе с нами.</p>
+        </section>
+
+        <section class="features-section" id="features">
+            <div class="features">
+                <article class="card">
+                    <div class="card-title-block"><div class="card-dot"></div><h3>Абсолютный мир</h3></div>
+                    <p>У нас полностью выключено ПВП и запрещен любой гриф. Строй огромные города и автоматические фермы — твои ресурсы всегда в безопасности.</p>
+                </article>
+                <article class="card">
+                    <div class="card-title-block"><div class="card-dot"></div><h3>Оригинальный баланс</h3></div>
+                    <p>Чистая ванилла без ломающих плагинов, кастомных валют и цветных админских префиксов. Тот самый Майнкрафт, который мы любим.</p>
+                </article>
+                <article class="card">
+                    <div class="card-title-block"><div class="card-dot"></div><h3>Своё комьюнити</h3></div>
+                    <p>Объединяйся с друзьями, координируй проекты через Дискорд, делись ресурсами и строй историю Найт-Сити вместе с нами.</p>
+                </article>
             </div>
-        </div>
-    </section>
+        </section>
+    </main>
+
     <footer>
         <p>&copy; 2026 Night City Minecraft Project. Все права защищены.</p>
         <p class="credits">Powered by <span>Humanns9779</span> &bull; Style: <span class="brand">Humanns</span></p>
     </footer>
+
+    <div class="toast" id="toast" role="status" aria-live="polite"></div>
+
     <script>
-        async function checkServerStatus() {
-            const serverIp = 'NightCity.wellduck.org';
-            const wrapper = document.getElementById('status-wrapper');
-            const dot = document.getElementById('status-live-dot');
-            const textElement = document.getElementById('status-text');
-            if (!wrapper || !textElement || !dot) return;
-            try {
-                const response = await fetch('https://mcstatus.io' + serverIp);
-                if (!response.ok) throw new Error('API error');
-                const data = await response.json();
-                if (data.online === true) {
-                    wrapper.style.borderColor = 'rgba(16, 185, 129, 0.3)'; wrapper.style.color = '#10b981';
-                    dot.style.background = '#10b981'; dot.style.boxShadow = '0 0 10px #10b981';
-                    textElement.innerHTML = 'В сети: ' + data.players.online + ' / ' + data.players.max;
-                } else {
-                    wrapper.style.borderColor = 'rgba(239, 68, 68, 0.3)'; wrapper.style.color = '#ef4444';
-                    dot.style.background = '#ef4444'; dot.style.boxShadow = '0 0 10px #ef4444';
-                    textElement.innerText = 'Сервер оффлайн';
-                }
-            } catch (error) {
-                wrapper.style.borderColor = 'rgba(239, 68, 68, 0.3)'; wrapper.style.color = '#ef4444';
-                dot.style.background = '#ef4444'; dot.style.boxShadow = '0 0 10px #ef4444';
-                textElement.innerText = 'Ошибка загрузки';
+        (function () {
+            'use strict';
+
+            var SERVER_IP = 'NightCity.wellduck.org';
+            var REFRESH_MS = 30000;
+
+            var wrapper = document.getElementById('status-wrapper');
+            var textEl = document.getElementById('status-text');
+            var toast = document.getElementById('toast');
+            var toastTimer;
+            var timer;
+
+            function setStatus(state, text) {
+                wrapper.dataset.state = state;
+                textEl.textContent = text;
             }
-        }
-        checkServerStatus(); setInterval(checkServerStatus, 30000);
-        function copyIP() {
-            const ipSpan = document.getElementById('server-ip'); if (!ipSpan) return;
-            navigator.clipboard.writeText(ipSpan.innerText).then(function() {
-                alert('IP адрес сервера успешно скопирован! Открывай Майнкрафт и заходи к нам.');
-            }).catch(function(err) { console.error('Ошибка: ', err); });
-        }
+
+            // Несколько независимых API: если один недоступен, пробуем следующий
+            var PROVIDERS = [
+                'https://api.mcstatus.io/v2/status/java/' + encodeURIComponent(SERVER_IP),
+                'https://api.mcsrvstat.us/3/' + encodeURIComponent(SERVER_IP)
+            ];
+
+            async function fetchJSON(url) {
+                var controller = new AbortController();
+                var abortTimer = setTimeout(function () { controller.abort(); }, 8000);
+                try {
+                    var res = await fetch(url, { signal: controller.signal, cache: 'no-store' });
+                    if (!res.ok) throw new Error('HTTP ' + res.status);
+                    return await res.json();
+                } finally {
+                    clearTimeout(abortTimer);
+                }
+            }
+
+            async function checkServerStatus() {
+                for (var i = 0; i < PROVIDERS.length; i++) {
+                    try {
+                        var data = await fetchJSON(PROVIDERS[i]);
+                        if (typeof data.online !== 'boolean') throw new Error('Неожиданный ответ API');
+
+                        if (data.online) {
+                            var p = data.players || {};
+                            setStatus('online', 'В сети: ' + (p.online || 0) + ' / ' + (p.max || 0));
+                        } else {
+                            setStatus('offline', 'Сервер оффлайн');
+                        }
+                        return;
+                    } catch (err) {
+                        console.warn('Статус: провайдер ' + (i + 1) + ' не ответил —', err);
+                    }
+                }
+                setStatus('error', 'Статус недоступен');
+            }
+
+            // Клик по статусу — проверить вручную
+            wrapper.style.cursor = 'pointer';
+            wrapper.title = 'Нажмите, чтобы обновить';
+            wrapper.addEventListener('click', function () {
+                setStatus('loading', 'Проверяем сервер…');
+                checkServerStatus();
+            });
+
+            function startPolling() {
+                checkServerStatus();
+                timer = setInterval(checkServerStatus, REFRESH_MS);
+            }
+
+            // Не опрашиваем API, пока вкладка неактивна
+            document.addEventListener('visibilitychange', function () {
+                clearInterval(timer);
+                if (!document.hidden) startPolling();
+            });
+            startPolling();
+
+            function showToast(message) {
+                toast.textContent = message;
+                toast.classList.add('show');
+                clearTimeout(toastTimer);
+                toastTimer = setTimeout(function () { toast.classList.remove('show'); }, 3000);
+            }
+
+            function fallbackCopy(text) {
+                var area = document.createElement('textarea');
+                area.value = text;
+                area.setAttribute('readonly', '');
+                area.style.cssText = 'position:fixed;opacity:0;';
+                document.body.appendChild(area);
+                area.select();
+                var ok = false;
+                try { ok = document.execCommand('copy'); } catch (e) {}
+                document.body.removeChild(area);
+                return ok;
+            }
+
+            async function copyIP() {
+                var ip = document.getElementById('server-ip').textContent.trim();
+                var ok = false;
+                try {
+                    await navigator.clipboard.writeText(ip);
+                    ok = true;
+                } catch (e) {
+                    ok = fallbackCopy(ip);
+                }
+                showToast(ok
+                    ? 'IP скопирован: ' + ip
+                    : 'Не удалось скопировать. IP сервера: ' + ip);
+            }
+
+            document.getElementById('copy-btn').addEventListener('click', copyIP);
+        })();
     </script>
 </body>
 </html>
