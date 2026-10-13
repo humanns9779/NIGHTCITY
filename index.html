@@ -5,323 +5,116 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Night City | By Humanns9779</title>
     <style>
-        /* Фирменный стиль Humanns9779 (Aesthetic, Y2K, Neon Glow) */
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-        }
-
-        html {
-            scroll-behavior: smooth;
-        }
-
-        body {
-            background-color: #0c0c0e;
-            color: #d1d5db;
-            overflow-x: hidden;
-            position: relative;
-        }
-
-        /* Задний фон: Размытые неоновые свечения */
-        body::before {
-            content: "";
-            position: fixed;
-            top: -10%;
-            right: -10%;
-            width: 500px;
-            height: 500px;
-            background: radial-gradient(circle, rgba(168, 85, 247, 0.15) 0%, transparent 70%);
-            filter: blur(60px);
-            z-index: -1;
-        }
-
-        body::after {
-            content: "";
-            position: fixed;
-            bottom: -10%;
-            left: -10%;
-            width: 600px;
-            height: 600px;
-            background: radial-gradient(circle, rgba(192, 132, 252, 0.1) 0%, transparent 70%);
-            filter: blur(80px);
-            z-index: -1;
-        }
-
-        /* Шапка сайта */
-        header {
-            background: rgba(12, 12, 14, 0.8);
-            backdrop-filter: blur(12px);
-            padding: 20px 50px;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            position: fixed;
-            width: 100%;
-            top: 0;
-            z-index: 1000;
-            border-bottom: 1px solid rgba(255, 255, 255, 0.03);
-        }
-
-        .logo-block {
-            display: flex;
-            align-items: center;
-            gap: 15px;
-        }
-
-        .logo {
-            font-size: 22px;
-            font-weight: 900;
-            text-transform: uppercase;
-            letter-spacing: 2px;
-            color: #ffffff;
-        }
-
-        .logo span {
-            color: #c084fc;
-        }
-
-        nav a {
-            color: #9ca3af;
-            text-decoration: none;
-            margin-left: 25px;
-            font-weight: 600;
-            font-size: 14px;
-            letter-spacing: 1px;
-            transition: 0.3s;
-        }
-
-        nav a:hover {
-            color: #c084fc;
-            text-shadow: 0 0 8px rgba(192, 132, 252, 0.6);
-        }
-
-        /* Главный экран */
-        .hero {
-            height: 100vh;
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            align-items: center;
-            text-align: center;
-            padding: 20px;
-            position: relative;
-        }
-
-        .hero h1 {
-            font-size: 72px;
-            font-weight: 950;
-            letter-spacing: 4px;
-            margin-bottom: 20px;
-            color: #ffffff;
-            text-shadow: 0 0 30px rgba(192, 132, 252, 0.3);
-        }
-
-        .hero p {
-            font-size: 20px;
-            color: #9ca3af;
-            margin-bottom: 40px;
-            max-width: 650px;
-            line-height: 1.6;
-        }
-
-        /* Кнопки */
-        .cta-container {
-            display: flex;
-            gap: 20px;
-            flex-wrap: wrap;
-            justify-content: center;
-        }
-
-        .btn {
-            padding: 16px 38px;
-            border-radius: 12px;
-            cursor: pointer;
-            font-weight: 700;
-            font-size: 15px;
-            letter-spacing: 1px;
-            transition: all 0.3s ease;
-            text-decoration: none;
-            display: inline-flex;
-            align-items: center;
-            gap: 10px;
-        }
-
-        .ip-box {
-            background: #111115;
-            border: 2px solid #c084fc;
-            color: #ffffff;
-            box-shadow: 0 0 20px rgba(192, 132, 252, 0.2);
-        }
-
-        .ip-box:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 0 30px rgba(192, 132, 252, 0.5);
-            background: #c084fc;
-        }
-
-        .discord-btn {
-            background: #5865F2;
-            border: 2px solid #5865F2;
-            color: #ffffff;
-        }
-
-        .discord-btn:hover {
-            transform: translateY(-2px);
-            background: #4752c4;
-            border-color: #4752c4;
-            box-shadow: 0 0 25px rgba(88, 101, 242, 0.4);
-        }
-
-        /* Карточки фишек */
-        .features-section {
-            padding: 100px 20px;
-            max-width: 1100px;
-            margin: 0 auto;
-        }
-
-        .features {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-            gap: 25px;
-        }
-
-        .card {
-            background: rgba(17, 17, 21, 0.6);
-            border: 1px solid rgba(255, 255, 255, 0.02);
-            border-radius: 16px;
-            padding: 40px;
-            transition: all 0.3s ease;
-            backdrop-filter: blur(8px);
-        }
-
-        .card:hover {
-            border-color: rgba(192, 132, 252, 0.3);
-            transform: translateY(-4px);
-            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
-        }
-
-        .card-title-block {
-            display: flex;
-            align-items: center;
-            gap: 15px;
-            margin-bottom: 20px;
-        }
-
-        .card-dot {
-            width: 8px;
-            height: 8px;
-            background: #c084fc;
-            border-radius: 50%;
-            box-shadow: 0 0 8px #c084fc;
-        }
-
-        .card h3 {
-            font-size: 20px;
-            color: #ffffff;
-            font-weight: 700;
-            letter-spacing: 0.5px;
-        }
-
-        .card p {
-            color: #9ca3af;
-            line-height: 1.7;
-            font-size: 15px;
-        }
-
-        /* Подвал */
-        footer {
-            background: #08080a;
-            padding: 40px 20px;
-            text-align: center;
-            color: #4b5563;
-            font-size: 14px;
-            border-top: 1px solid rgba(255, 255, 255, 0.02);
-        }
-
-        .credits span {
-            color: #ffffff;
-            font-weight: 700;
-        }
-        
-        .credits .brand {
-            color: #c084fc;
-            text-shadow: 0 0 5px rgba(192, 132, 252, 0.5);
-        }
+        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Segoe UI', sans-serif; }
+        html { scroll-behavior: smooth; }
+        body { background-color: #0c0c0e; color: #d1d5db; overflow-x: hidden; position: relative; }
+        body::before { content: ""; position: fixed; top: -10%; right: -10%; width: 500px; height: 500px; background: radial-gradient(circle, rgba(168, 85, 247, 0.15) 0%, transparent 70%); filter: blur(60px); z-index: -1; }
+        body::after { content: ""; position: fixed; bottom: -10%; left: -10%; width: 600px; height: 600px; background: radial-gradient(circle, rgba(192, 132, 252, 0.1) 0%, transparent 70%); filter: blur(80px); z-index: -1; }
+        header { background: rgba(12, 12, 14, 0.8); backdrop-filter: blur(12px); padding: 20px 50px; display: flex; justify-content: space-between; align-items: center; position: fixed; width: 100%; top: 0; z-index: 1000; border-bottom: 1px solid rgba(255, 255, 255, 0.03); }
+        .logo-block { display: flex; align-items: center; gap: 15px; }
+        .logo { font-size: 22px; font-weight: 900; text-transform: uppercase; letter-spacing: 2px; color: #ffffff; }
+        .logo span { color: #c084fc; }
+        nav a { color: #9ca3af; text-decoration: none; margin-left: 25px; font-weight: 600; font-size: 14px; letter-spacing: 1px; transition: 0.3s; }
+        nav a:hover { color: #c084fc; text-shadow: 0 0 8px rgba(192, 132, 252, 0.6); }
+        .hero { height: 100vh; display: flex; flex-direction: column; justify-content: center; align-items: center; text-align: center; padding: 20px; position: relative; }
+        .hero h1 { font-size: 72px; font-weight: 950; letter-spacing: 4px; margin-bottom: 20px; color: #ffffff; text-shadow: 0 0 30px rgba(192, 132, 252, 0.3); }
+        .hero p { font-size: 20px; color: #9ca3af; margin-bottom: 40px; max-width: 650px; line-height: 1.6; }
+        .cta-container { display: flex; gap: 20px; flex-wrap: wrap; justify-content: center; margin-bottom: 30px; }
+        .btn { padding: 16px 38px; border-radius: 12px; cursor: pointer; font-weight: 700; font-size: 15px; letter-spacing: 1px; transition: all 0.3s ease; text-decoration: none; display: inline-flex; align-items: center; gap: 10px; }
+        .ip-box { background: #111115; border: 2px solid #c084fc; color: #ffffff; box-shadow: 0 0 20px rgba(192, 132, 252, 0.2); }
+        .ip-box:hover { transform: translateY(-2px); box-shadow: 0 0 30px rgba(192, 132, 252, 0.5); background: #c084fc; }
+        .discord-btn { background: #5865F2; border: 2px solid #5865F2; color: #ffffff; }
+        .discord-btn:hover { transform: translateY(-2px); background: #4752c4; border-color: #4752c4; box-shadow: 0 0 25px rgba(88, 101, 242, 0.4); }
+        .status-container { background: rgba(17, 17, 21, 0.6); border: 1px solid rgba(255, 255, 255, 0.05); border-radius: 14px; padding: 15px 40px; font-size: 15px; font-weight: 700; text-transform: uppercase; letter-spacing: 1.5px; backdrop-filter: blur(8px); box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3); display: inline-flex; align-items: center; gap: 10px; color: #94a3b8; }
+        .status-dot { width: 8px; height: 8px; border-radius: 50%; display: inline-block; background: #94a3b8; box-shadow: 0 0 8px #94a3b8; }
+        .features-section { padding: 100px 20px; max-width: 1100px; margin: 0 auto; }
+        .features { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 25px; }
+        .card { background: rgba(17, 17, 21, 0.6); border: 1px solid rgba(255, 255, 255, 0.02); border-radius: 16px; padding: 40px; transition: all 0.3s ease; backdrop-filter: blur(8px); }
+        .card:hover { border-color: rgba(192, 132, 252, 0.3); transform: translateY(-4px); box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5); }
+        .card-title-block { display: flex; align-items: center; gap: 15px; margin-bottom: 20px; }
+        .card-dot { width: 8px; height: 8px; background: #c084fc; border-radius: 50%; box-shadow: 0 0 8px #c084fc; }
+        .card h3 { font-size: 20px; color: #ffffff; font-weight: 700; letter-spacing: 0.5px; }
+        .card p { color: #9ca3af; line-height: 1.7; font-size: 15px; }
+        footer { background: #08080a; padding: 40px 20px; text-align: center; color: #4b5563; font-size: 14px; border-top: 1px solid rgba(255, 255, 255, 0.02); }
+        .credits span { color: #ffffff; font-weight: 700; }
+        .credits .brand { color: #c084fc; text-shadow: 0 0 5px rgba(192, 132, 252, 0.5); }
     </style>
 </head>
 <body>
-
-    <!-- Навигация -->
     <header>
-        <div class="logo-block">
-            <div class="logo">Night<span>City</span></div>
-        </div>
-        <nav>
-            <a href="#hero">Главная</a>
-            <a href="#features">О проекте</a>
-            <a href="https://discord.gg" target="_blank">Discord</a>
-        </nav>
+        <div class="logo-block"><div class="logo">Night<span>City</span></div></div>
+        <nav><a href="#hero">Главная</a><a href="#features">О проекте</a><a href="https://discord.gg" target="_blank">Discord</a></nav>
     </header>
-
-    <!-- Главный экран -->
     <section class="hero" id="hero">
         <h1>NIGHT CITY</h1>
         <p>Атмосферный ламповый сервер. Только чистая ванилла, общение, масштабное строительство и полное отсутствие ПВП. Твой идеальный мир для отдыха.</p>
-        
         <div class="cta-container">
-            <div class="btn ip-box" onclick="copyIP()">
-                Скопировать IP: <span id="server-ip">NightCity.wellduck.org</span>
-            </div>
-            <a href="https://discord.gg/K6WrEPe92w" target="_blank" class="btn discord-btn">
-                Подать заявку
-            </a>
+            <div class="btn ip-box" onclick="copyIP()">Скопировать IP: <span id="server-ip">NightCity.wellduck.org</span></div>
+            <a href="https://discord.gg" target="_blank" class="btn discord-btn">Подать заявку</a>
+        </div>
+        <div id="status-wrapper" class="status-container">
+        <!-- Блок статуса: чистый HTML без ломающихся скриптов и внешних картинок -->
+        <div class="status-container" style="border: 1px solid rgba(16, 185, 129, 0.2); color: #10b981; margin-top: 30px;">
+            <span class="status-dot" style="background: #10b981; box-shadow: 0 0 10px #10b981;"></span>
+            <span>Сервер запущен • 1.21+</span>
         </div>
     </section>
 
     <!-- Фишки сервера -->
     <section class="features-section" id="features">
-        <div class="features">
+
+ss="features">
             <div class="card">
-                <div class="card-title-block">
-                    <div class="card-dot"></div>
-                    <h3>Абсолютный мир</h3>
-                </div>
+                <div class="card-title-block"><div class="card-dot"></div><h3>Абсолютный мир</h3></div>
                 <p>У нас полностью выключено ПВП и запрещен любой гриф. Строй огромные города и автоматические фермы — твои ресурсы всегда в безопасности.</p>
             </div>
             <div class="card">
-                <div class="card-title-block">
-                    <div class="card-dot"></div>
-                    <h3>Оригинальный баланс</h3>
-                </div>
+                <div class="card-title-block"><div class="card-dot"></div><h3>Оригинальный баланс</h3></div>
                 <p>Чистая ванилла без ломающих плагинов, кастомных валют и цветных админских префиксов. Тот самый Майнкрафт, который мы любим.</p>
             </div>
             <div class="card">
-                <div class="card-title-block">
-                    <div class="card-dot"></div>
-                    <h3>Своё комьюнити</h3>
-                </div>
+                <div class="card-title-block"><div class="card-dot"></div><h3>Своё комьюнити</h3></div>
                 <p>Объединяйся с друзьями, координируй проекты через Дискорд, делись ресурсами и строй историю Найт-Сити вместе с нами.</p>
             </div>
         </div>
     </section>
-
     <footer>
         <p>&copy; 2026 Night City Minecraft Project. Все права защищены.</p>
         <p class="credits">Powered by <span>Humanns9779</span> &bull; Style: <span class="brand">Humanns</span></p>
     </footer>
-
     <script>
+        async function checkServerStatus() {
+            const serverIp = 'NightCity.wellduck.org';
+            const wrapper = document.getElementById('status-wrapper');
+            const dot = document.getElementById('status-live-dot');
+            const textElement = document.getElementById('status-text');
+            if (!wrapper || !textElement || !dot) return;
+            try {
+                const response = await fetch('https://mcstatus.io' + serverIp);
+                if (!response.ok) throw new Error('API error');
+                const data = await response.json();
+                if (data.online === true) {
+                    wrapper.style.borderColor = 'rgba(16, 185, 129, 0.3)'; wrapper.style.color = '#10b981';
+                    dot.style.background = '#10b981'; dot.style.boxShadow = '0 0 10px #10b981';
+                    textElement.innerHTML = 'В сети: ' + data.players.online + ' / ' + data.players.max;
+                } else {
+                    wrapper.style.borderColor = 'rgba(239, 68, 68, 0.3)'; wrapper.style.color = '#ef4444';
+                    dot.style.background = '#ef4444'; dot.style.boxShadow = '0 0 10px #ef4444';
+                    textElement.innerText = 'Сервер оффлайн';
+                }
+            } catch (error) {
+                wrapper.style.borderColor = 'rgba(239, 68, 68, 0.3)'; wrapper.style.color = '#ef4444';
+                dot.style.background = '#ef4444'; dot.style.boxShadow = '0 0 10px #ef4444';
+                textElement.innerText = 'Ошибка загрузки';
+            }
+        }
+        checkServerStatus(); setInterval(checkServerStatus, 30000);
         function copyIP() {
-            const ipText = document.getElementById('server-ip').innerText;
-            navigator.clipboard.writeText(ipText).then(() => {
+            const ipSpan = document.getElementById('server-ip'); if (!ipSpan) return;
+            navigator.clipboard.writeText(ipSpan.innerText).then(function() {
                 alert('IP адрес сервера успешно скопирован! Открывай Майнкрафт и заходи к нам.');
-            }).catch(err => {
-                console.error('Ошибка копирования: ', err);
-            });
+            }).catch(function(err) { console.error('Ошибка: ', err); });
         }
     </script>
-
 </body>
 </html>
