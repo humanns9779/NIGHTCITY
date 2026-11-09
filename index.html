@@ -3,288 +3,951 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="Night City — ламповый ванильный Minecraft-сервер без ПВП: строительство, общение и спокойная игра.">
-    <meta name="theme-color" content="#0c0c0e">
-    <title>Night City — ванильный Minecraft без ПВП</title>
+    <title>NIGHT CITY — Атмосферный ванильный сервер Minecraft</title>
     <style>
         :root {
-            --bg: #0c0c0e;
-            --surface: rgba(17, 17, 21, 0.6);
-            --text: #d1d5db;
-            --muted: #9ca3af;
-            --accent: #c084fc;
+            --bg: #06050a;
+            --surface: #0c0a14;
+            --surface-accent: #141124;
+            --border: #262042;
+            --text: #ffffff;
+            --text-muted: #8a94a6;
+            --accent-purple: #7c3bed;
+            --accent-blue: #2563eb;
+            --accent-blue-hover: #1d4ed8;
+            --warn: #f59e0b;
             --ok: #10b981;
             --bad: #ef4444;
-            --warn: #94a3b8;
-            --discord: #5865f2;
         }
-        *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
-        html { scroll-behavior: smooth; scroll-padding-top: 80px; }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
         body {
-            font-family: 'Segoe UI', system-ui, -apple-system, Roboto, sans-serif;
-            background: var(--bg); color: var(--text);
-            overflow-x: hidden; -webkit-font-smoothing: antialiased;
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+            background-color: var(--bg);
+            color: var(--text);
+            line-height: 1.6;
+            overflow-x: hidden;
+            position: relative;
         }
-        body::before, body::after { content: ""; position: fixed; border-radius: 50%; z-index: -1; pointer-events: none; }
-        body::before { top: -10%; right: -10%; width: 500px; height: 500px; background: radial-gradient(circle, rgba(168, 85, 247, .15), transparent 70%); filter: blur(60px); }
-        body::after { bottom: -10%; left: -10%; width: 600px; height: 600px; background: radial-gradient(circle, rgba(192, 132, 252, .1), transparent 70%); filter: blur(80px); }
 
-        :focus-visible { outline: 2px solid var(--accent); outline-offset: 3px; }
+        body::before, body::after {
+            content: "";
+            position: absolute;
+            width: 400px;
+            height: 400px;
+            background: radial-gradient(circle, rgba(124, 59, 237, 0.15) 0%, rgba(0,0,0,0) 70%);
+            top: 15%;
+            z-index: -1;
+            pointer-events: none;
+        }
+        body::before { left: -150px; }
+        body::after { right: -150px; top: 40%; }
 
-        /* Header */
         header {
-            position: fixed; top: 0; left: 0; width: 100%; z-index: 1000;
-            display: flex; justify-content: space-between; align-items: center; gap: 16px;
-            padding: 18px clamp(16px, 4vw, 50px);
-            background: rgba(12, 12, 14, .8); backdrop-filter: blur(12px);
-            border-bottom: 1px solid rgba(255, 255, 255, .03);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 30px 10%;
+            max-width: 1400px;
+            margin: 0 auto;
         }
-        .logo { font-size: 22px; font-weight: 900; text-transform: uppercase; letter-spacing: 2px; color: #fff; text-decoration: none; }
-        .logo span { color: var(--accent); }
-        nav { display: flex; gap: clamp(14px, 3vw, 25px); }
-        nav a { color: var(--muted); text-decoration: none; font-weight: 600; font-size: 14px; letter-spacing: 1px; transition: color .3s, text-shadow .3s; }
-        nav a:hover { color: var(--accent); text-shadow: 0 0 8px rgba(192, 132, 252, .6); }
 
-        /* Hero */
-        .hero {
-            min-height: 100vh; min-height: 100svh;
-            display: flex; flex-direction: column; justify-content: center; align-items: center;
-            text-align: center; padding: 110px 20px 60px;
+        .logo {
+            font-weight: 800;
+            font-size: 20px;
+            letter-spacing: 1px;
+            text-transform: uppercase;
         }
-        .hero h1 { font-size: clamp(40px, 10vw, 72px); font-weight: 900; letter-spacing: 4px; margin-bottom: 20px; color: #fff; text-shadow: 0 0 30px rgba(192, 132, 252, .3); }
-        .hero p { font-size: clamp(16px, 2.5vw, 20px); color: var(--muted); margin-bottom: 40px; max-width: 650px; line-height: 1.6; }
-        .cta-container { display: flex; gap: 20px; flex-wrap: wrap; justify-content: center; margin-bottom: 30px; }
+
+        nav a {
+            color: var(--text-muted);
+            text-decoration: none;
+            margin-left: 30px;
+            font-size: 14px;
+            font-weight: 500;
+            transition: color 0.3s;
+            cursor: pointer;
+        }
+
+        nav a:hover {
+            color: var(--text);
+        }
+
+        .hero {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            text-align: center;
+            padding: 100px 20px 80px 20px;
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        .hero h1 {
+            font-size: 56px;
+            font-weight: 900;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            margin-bottom: 20px;
+        }
+
+        .hero p.description {
+            color: var(--text-muted);
+            font-size: 16px;
+            margin-bottom: 40px;
+            max-width: 650px;
+        }
+
+        .cta-group {
+            display: flex;
+            gap: 15px;
+            margin-bottom: 35px;
+            flex-wrap: wrap;
+            justify-content: center;
+        }
 
         .btn {
-            padding: 16px 38px; border-radius: 12px; cursor: pointer;
-            font: inherit; font-weight: 700; font-size: 15px; letter-spacing: 1px;
-            transition: transform .3s, box-shadow .3s, background .3s, border-color .3s;
-            text-decoration: none; display: inline-flex; align-items: center; justify-content: center; gap: 10px; color: #fff;
+            font-size: 15px;
+            font-weight: 600;
+            padding: 14px 28px;
+            border-radius: 10px;
+            cursor: pointer;
+            text-decoration: none;
+            transition: all 0.3s;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
         }
-        .btn:hover { transform: translateY(-2px); }
-        .ip-box { background: #111115; border: 2px solid var(--accent); box-shadow: 0 0 20px rgba(192, 132, 252, .2); }
-        .ip-box:hover { box-shadow: 0 0 30px rgba(192, 132, 252, .5); background: var(--accent); color: #0c0c0e; }
-        .discord-btn { background: var(--discord); border: 2px solid var(--discord); }
-        .discord-btn:hover { background: #4752c4; border-color: #4752c4; box-shadow: 0 0 25px rgba(88, 101, 242, .4); }
 
-        /* Server status */
+        .btn-ip {
+            background: transparent;
+            border: 2px solid var(--accent-purple);
+            color: var(--text);
+        }
+
+        .btn-ip.copied {
+            border-color: var(--ok);
+            background: rgba(16, 185, 129, 0.1);
+        }
+
+        .btn-apply {
+            background: var(--accent-blue);
+            color: var(--text);
+            border: none;
+        }
+
+        .btn-apply:hover {
+            background: var(--accent-blue-hover);
+        }
+
+        .btn-rules {
+            background: transparent;
+            border: 1px solid var(--border);
+            color: var(--text-muted);
+        }
+
+        .btn-rules:hover {
+            border-color: var(--accent-purple);
+            color: var(--text);
+        }
+
         .status-container {
             display: inline-flex; align-items: center; gap: 10px;
             background: var(--surface); border: 1px solid rgba(255, 255, 255, .05); border-radius: 14px;
             padding: 15px 40px; font-size: 15px; font-weight: 700; text-transform: uppercase; letter-spacing: 1.5px;
             backdrop-filter: blur(8px); box-shadow: 0 4px 20px rgba(0, 0, 0, .3);
             color: var(--warn); transition: color .3s, border-color .3s;
+            user-select: none;
         }
         .status-dot { width: 8px; height: 8px; border-radius: 50%; background: currentColor; box-shadow: 0 0 10px currentColor; }
         .status-container[data-state="online"] { color: var(--ok); border-color: rgba(16, 185, 129, .3); }
         .status-container[data-state="offline"],
         .status-container[data-state="error"] { color: var(--bad); border-color: rgba(239, 68, 68, .3); }
 
-        /* Features */
-        .features-section { padding: 100px 20px; max-width: 1100px; margin: 0 auto; }
-        .features { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 300px), 1fr)); gap: 25px; }
-        .card { background: var(--surface); border: 1px solid rgba(255, 255, 255, .02); border-radius: 16px; padding: 40px; transition: border-color .3s, transform .3s, box-shadow .3s; backdrop-filter: blur(8px); }
-        .card:hover { border-color: rgba(192, 132, 252, .3); transform: translateY(-4px); box-shadow: 0 10px 30px rgba(0, 0, 0, .5); }
-        .card-title-block { display: flex; align-items: center; gap: 15px; margin-bottom: 20px; }
-        .card-dot { flex: none; width: 8px; height: 8px; background: var(--accent); border-radius: 50%; box-shadow: 0 0 8px var(--accent); }
-        .card h3 { font-size: 20px; color: #fff; font-weight: 700; letter-spacing: .5px; }
-        .card p { color: var(--muted); line-height: 1.7; font-size: 15px; }
-
-        /* Footer */
-        footer { background: #08080a; padding: 40px 20px; text-align: center; color: #6b7280; font-size: 14px; line-height: 1.8; border-top: 1px solid rgba(255, 255, 255, .02); }
-        .credits span { color: #fff; font-weight: 700; }
-        .credits .brand { color: var(--accent); text-shadow: 0 0 5px rgba(192, 132, 252, .5); }
-
-        /* Toast */
-        .toast {
-            position: fixed; left: 50%; bottom: 30px; z-index: 2000;
-            transform: translate(-50%, 20px); opacity: 0; pointer-events: none;
-            background: #111115; color: #fff; border: 1px solid var(--accent); border-radius: 12px;
-            padding: 14px 24px; font-size: 14px; max-width: calc(100% - 32px); text-align: center;
-            box-shadow: 0 0 25px rgba(192, 132, 252, .3); transition: opacity .3s, transform .3s;
+        .section {
+            padding: 60px 10%;
+            max-width: 1400px;
+            margin: 0 auto;
+            text-align: center;
         }
-        .toast.show { opacity: 1; transform: translate(-50%, 0); }
 
-        @media (max-width: 560px) {
-            header { padding: 14px 16px; }
-            .logo { font-size: 18px; }
-            nav a { font-size: 12px; letter-spacing: .5px; }
-            .btn { width: 100%; padding: 15px 24px; }
-            .cta-container { width: 100%; max-width: 360px; flex-direction: column; }
-            .status-container { padding: 12px 22px; font-size: 13px; }
-            .card { padding: 28px; }
+        .section-title {
+            font-size: 28px;
+            font-weight: 800;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-bottom: 40px;
         }
-        @media (prefers-reduced-motion: reduce) {
-            html { scroll-behavior: auto; }
-            *, *::before, *::after { transition: none !important; }
+
+        .cards-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 25px;
+            margin-top: 20px;
+        }
+
+        .card {
+            background-color: var(--surface);
+            border: 1px solid var(--border);
+            border-radius: 14px;
+            padding: 35px 30px;
+            text-align: left;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .card-num {
+            position: absolute;
+            right: 25px;
+            top: 20px;
+            font-size: 14px;
+            font-weight: 700;
+            color: var(--accent-purple);
+            opacity: 0.8;
+        }
+
+        .card h3 {
+            font-size: 18px;
+            font-weight: 700;
+            margin-bottom: 15px;
+        }
+
+        .card p {
+            color: var(--text-muted);
+            font-size: 14px;
+            line-height: 1.6;
+        }
+
+        /* Окно правил (Полноэкранный интерфейс) */
+        .rules-modal {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(6, 5, 10, 0.98);
+            z-index: 1000;
+            display: none;
+            overflow-y: auto;
+            padding: 60px 10%;
+        }
+
+        .rules-modal.active {
+            display: block;
+        }
+
+        .rules-content {
+            max-width: 900px;
+            margin: 0 auto;
+            position: relative;
+        }
+
+        .close-rules {
+            position: absolute;
+            right: 0;
+            top: -10px;
+            font-size: 24px;
+            color: var(--text-muted);
+            cursor: pointer;
+            transition: color 0.3s;
+        }
+
+        .close-rules:hover {
+            color: var(--text);
+        }
+
+        .rules-tabs {
+            display: flex;
+            gap: 10px;
+            margin-top: 40px;
+            margin-bottom: 25px;
+            flex-wrap: wrap;
+            justify-content: center;
+        }
+
+        .tab-btn {
+            background: var(--surface);
+            border: 1px solid var(--border);
+            color: var(--text-muted);
+            padding: 12px 24px;
+            border-radius: 10px;
+            font-size: 14px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .tab-btn:hover {
+            border-color: var(--accent-purple);
+            color: var(--text);
+        }
+
+        .tab-btn.active {
+            background: var(--accent-purple);
+            border-color: var(--accent-purple);
+            color: var(--text);
+            box-shadow: 0 0 15px rgba(124, 59, 237, 0.4);
+        }
+
+        .rules-list {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+        }
+
+        /* Интерактивные кликабельные плашки правил */
+        .rule-item {
+            background-color: var(--surface);
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            padding: 20px 25px;
+            text-align: left;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            position: relative;
+        }
+
+        .rule-item:hover {
+            background-color: var(--surface-accent);
+            border-color: var(--accent-purple);
+            transform: translateX(4px);
+        }
+
+        .rule-item.expanded {
+            background-color: var(--surface-accent);
+            border-color: var(--accent-purple);
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.4);
+        }
+
+        .rule-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            gap: 15px;
+        }
+
+        .rule-title {
+            font-size: 15px;
+            font-weight: 600;
+            color: var(--text);
+        }
+
+        .rule-badge {
+            font-size: 11px;
+            font-weight: 700;
+            text-transform: uppercase;
+            padding: 4px 10px;
+            border-radius: 6px;
+            white-space: nowrap;
+            margin-top: 2px;
+        }
+
+        .badge-info { background: rgba(37, 99, 235, 0.15); color: #60a5fa; border: 1px solid rgba(37, 99, 235, 0.3); }
+        .badge-ban { background: rgba(239, 68, 68, 0.15); color: #f87171; border: 1px solid rgba(239, 68, 68, 0.3); }
+        .badge-mut { background: rgba(245, 158, 11, 0.15); color: #fbbf24; border: 1px solid rgba(245, 158, 11, 0.3); }
+
+        .rule-body {
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.3s ease, margin-top 0.3s ease;
+            color: var(--text-muted);
+            font-size: 14px;
+            line-height: 1.6;
+        }
+
+        .rule-item.expanded .rule-body {
+            max-height: 500px;
+            margin-top: 15px;
+            padding-top: 15px;
+            border-top: 1px solid rgba(255, 255, 255, 0.05);
+        }
+
+        .rule-arrow {
+            color: var(--text-muted);
+            font-size: 12px;
+            transition: transform 0.3s;
+            margin-top: 5px;
+        }
+
+        .rule-item.expanded .rule-arrow {
+            transform: rotate(180px);
+            color: var(--text);
+        }
+
+        footer {
+            text-align: center;
+            padding: 40px 20px;
+            color: var(--text-muted);
+            font-size: 13px;
+            border-top: 1px solid var(--border);
+            margin-top: 60px;
+        }
+
+        @media (max-width: 768px) {
+            .hero h1 { font-size: 38px; }
+            header { padding: 20px 5%; }
+            .section { padding: 40px 5%; }
+            .cta-group { flex-direction: column; width: 100%; max-width: 300px; }
+            .btn { width: 100%; }
+            .rules-tabs { gap: 5px; }
+            .tab-btn { padding: 10px 16px; font-size: 13px; }
         }
     </style>
 </head>
 <body>
+
     <header>
-        <a class="logo" href="#hero">Night<span>City</span></a>
-        <nav aria-label="Основная навигация">
-            <a href="#hero">Главная</a>
-            <a href="#features">О проекте</a>
-            <a href="https://discord.gg/hawNerGWH7" target="_blank" rel="noopener noreferrer">Discord</a>
+        <div class="logo">Night City</div>
+        <nav>
+            <a href="#">Главная</a>
+            <a href="#about">О проекте</a>
+            <a onclick="toggleRules(true)">Правила</a>
+            <a href="#" target="_blank">Discord</a>
         </nav>
     </header>
 
     <main>
-        <section class="hero" id="hero">
-            <h1>NIGHT CITY</h1>
-            <p>Атмосферный ламповый сервер. Только чистая ванилла, общение, масштабное строительство и полное отсутствие ПВП. Твой идеальный мир для отдыха.</p>
-
-            <div class="cta-container">
-                <button type="button" class="btn ip-box" id="copy-btn">
-                    Скопировать IP: <span id="server-ip">NightCity.wellduck.org</span>
-                </button>
-                <a href="https://discord.gg/hawNerGWH7" target="_blank" rel="noopener noreferrer" class="btn discord-btn">Подать заявку</a>
+        <section class="hero">
+            <h1>Night City</h1>
+            <p class="description">Атмосферный ламповый сервер. Только чистая ванилла, общение, масштабное строительство и полное отсутствие ПВП. Твой идеальный мир для отдыха.</p>
+            
+            <div class="cta-group">
+                <button class="btn btn-ip" id="ipBtn" onclick="copyIP()">Скопировать IP</button>
+                <a href="#" class="btn btn-apply" target="_blank">Подать заявку</a>
+                <button class="btn btn-rules" onclick="toggleRules(true)">Правила Сервера</button>
             </div>
 
-            <div id="status-wrapper" class="status-container" data-state="loading" role="status" aria-live="polite">
-                <span class="status-dot" aria-hidden="true"></span>
-                <span id="status-text">Проверяем сервер…</span>
+            <div class="status-container" id="serverStatus" data-state="checking">
+                <div class="status-dot"></div>
+                <span id="statusText">Проверка...</span>
             </div>
         </section>
 
-        <section class="features-section" id="features">
-            <div class="features">
-                <article class="card">
-                    <div class="card-title-block"><div class="card-dot"></div><h3>Абсолютный мир</h3></div>
-                    <p>У нас полностью выключено ПВП и запрещен любой гриф. Строй огромные города и автоматические фермы — твои ресурсы всегда в безопасности.</p>
-                </article>
-                <article class="card">
-                    <div class="card-title-block"><div class="card-dot"></div><h3>Оригинальный баланс</h3></div>
-                    <p>Чистая ванилла без ломающих плагинов, кастомных валют и цветных админских префиксов. Тот самый Майнкрафт, который мы любим.</p>
-                </article>
-                <article class="card">
-                    <div class="card-title-block"><div class="card-dot"></div><h3>Своё комьюнити</h3></div>
-                    <p>Объединяйся с друзьями, координируй проекты через Дискорд, делись ресурсами и строй историю Найт-Сити вместе с нами.</p>
-                </article>
+        <section class="section">
+            <h2 class="section-title">Как начать играть</h2>
+            <div class="cards-grid">
+                <div class="card">
+                    <div class="card-num">ШАГ 01</div>
+                    <h3>Подача заявки</h3>
+                    <p>Перейдите в наш Discord-сервер и оставьте короткую анкету. Наша модерация рассмотрит её в кратчайшие сроки для добавления вас в белый список.</p>
+                </div>
+                <div class="card">
+                    <div class="card-num">ШАГ 02</div>
+                    <h3>Копирование IP</h3>
+                    <p>Нажмите на кнопку копирования IP-адреса выше, чтобы мгновенно добавить адрес нашего уютного ванильного мира в свой игровой клиент.</p>
+                </div>
+                <div class="card">
+                    <div class="card-num">ШАГ 03</div>
+                    <h3>Играйте в удовольствие</h3>
+                    <p>Заходите на сервер, находите идеальное место для дома или проекта и наслаждайтесь оригинальным игровым балансом и крутым комьюнити.</p>
+                </div>
+            </div>
+        </section>
+
+        <section class="section" id="about">
+            <h2 class="section-title">О проекте</h2>
+            <div class="cards-grid">
+                <div class="card">
+                    <h3>Абсолютный мир</h3>
+                    <p>Никакого грифа, приватов командами и ПВП. Безопасность ваших построек гарантируется логами действий и строгой модерацией белого списка.</p>
+                </div>
+                <div class="card">
+                    <h3>Оригинальный баланс</h3>
+                    <p>Чистый игровой процесс без донатных админок, креатива или покупных ресурсов. Все игроки находятся в абсолютно равных условиях.</p>
+                </div>
+                <div class="card">
+                    <h3>Своё комьюнити</h3>
+                    <p>Мы собираем взрослых, адекватных игроков, увлечённых созданием красивых масштабных проектов и дружелюбным общением.</p>
+                </div>
             </div>
         </section>
     </main>
 
+    <!-- Окно интерактивных правил -->
+    <div class="rules-modal" id="rulesModal">
+        <div class="rules-content">
+            <div class="close-rules" onclick="toggleRules(false)">✕</div>
+            <h2 class="section-title" style="margin-top: 20px;">Правила Сервера</h2>
+            
+            <!-- Табы категорий правил -->
+            <div class="rules-tabs">
+                <button class="tab-btn active" onclick="switchTab(1)">1. Общее</button>
+                <button class="tab-btn" onclick="switchTab(2)">2. Мир</button>
+                <button class="tab-btn" onclick="switchTab(3)">3. Геймплей</button>
+                <button class="tab-btn" onclick="switchTab(4)">4. Общение</button>
+                <button class="tab-btn" onclick="switchTab(5)">5. Разное</button>
+            </div>
+            
+            <div class="rules-list">
+                <!-- Категория 1 -->
+                <div class="tab-content" id="tab-1">
+                    <div class="rule-item" onclick="toggleRule(this)">
+                        <div class="rule-header">
+                            <span class="rule-title">1.1. Согласие с правилами проекта</span>
+                            <span class="rule-badge badge-info">Инфо</span>
+                            <span class="rule-arrow">▼</span>
+                        </div>
+                        <div class="rule-body">
+                            Играя на нашем сервере, Вы тем самым соглашаетесь со всеми правилами, перечисленными ниже. В случае несогласия, игрок обязуется прекратить использование сервисов проекта.
+                        </div>
+                    </div>
+                    <div class="rule-item" onclick="toggleRule(this)">
+                        <div class="rule-header">
+                            <span class="rule-title">1.2. Ответственность за аккаунт и знание правил</span>
+                            <span class="rule-badge badge-info">Инфо</span>
+                            <span class="rule-arrow">▼</span>
+                        </div>
+                        <div class="rule-body">
+                            Незнание правил не освобождает Вас от ответственности. Взлом Вашего аккаунта или передача третьим лицам не является оправданием, если Вас обвиняют в нарушении правил.
+                        </div>
+                    </div>
+                    <div class="rule-item" onclick="toggleRule(this)">
+                        <div class="rule-header">
+                            <span class="rule-title">1.3. Исключительные решения Администрации</span>
+                            <span class="rule-badge badge-info">Инфо</span>
+                            <span class="rule-arrow">▼</span>
+                        </div>
+                        <div class="rule-body">
+                            Администрация может в исключительных случаях, не описанных в правилах, отказать Пользователю в игре на проекте. Причина отказа может не уточняться. На данный момент этот пункт не был применён ни разу.
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Категория 2 -->
+                <div class="tab-content" id="tab-2" style="display: none;">
+                    <div class="rule-item" onclick="toggleRule(this)">
+                        <div class="rule-header">
+                            <span class="rule-title">2.1. Изменение чужих построек и ландшафта</span>
+                            <span class="rule-badge badge-ban">Бан 1-3 дня</span>
+                            <span class="rule-arrow">▼</span>
+                        </div>
+                        <div class="rule-body">
+                            Запрещено разрушать, изменять или переделывать постройки и территорию игроков, не принадлежащие Вам (В том числе вне привата). Всё надо вернуть или последует Бан на 1-3 дней.
+                        </div>
+                    </div>
+                    <div class="rule-item" onclick="toggleRule(this)">
+                        <div class="rule-header">
+                            <span class="rule-title">2.2. Гриферство и воровство</span>
+                            <span class="rule-badge badge-ban">Бан 3-10 дней</span>
+                            <span class="rule-arrow">▼</span>
+                        </div>
+                        <div class="rule-body">
+                            Запрещено гриферство и воровство на территории всего мира (В том числе вне привата). Наказывается баном от 3 до 10 дней.
+                        </div>
+                    </div>
+                    <div class="rule-item" onclick="toggleRule(this)">
+                        <div class="rule-header">
+                            <span class="rule-title">2.3. Захламление окружающего мира</span>
+                            <span class="rule-badge badge-ban">Бан 1-3 дня</span>
+                            <span class="rule-arrow">▼</span>
+                        </div>
+                        <div class="rule-body">
+                            Запрещается захламлять мир (Строительство коробок, столбы, ямы, недорубленные деревья). Всё необходимо своевременно убрать, иначе выдается Бан на 1-3 дней.
+                        </div>
+                    </div>
+                    <div class="rule-item" onclick="toggleRule(this)">
+                        <div class="rule-header">
+                            <span class="rule-title">2.4. Убийство именных и домашних мобов</span>
+                            <span class="rule-badge badge-ban">Бан 1-3 дня</span>
+                            <span class="rule-arrow">▼</span>
+                        </div>
+                        <div class="rule-body">
+                            Запрещено убийство любых мобов названных бирками или же явно пойманных для каких-либо целей на чужой территории. Всё необходимо вернуть или компенсировать, иначе Бан 1-3 дней.
+                        </div>
+                    </div>
+                    <div class="rule-item" onclick="toggleRule(this)">
+                        <div class="rule-header">
+                            <span class="rule-title">2.5. Рекомендованные границы расселения</span>
+                            <span class="rule-badge badge-info">Предупреждение</span>
+                            <span class="rule-arrow">▼</span>
+                        </div>
+                        <div class="rule-body">
+                            Не рекомендуется селиться ближе чем в 128 блоках в обычном мире, 30 блоках в Незере и 256 блоках в Энде от ближайшей чужой постройки, иначе владелец исходной территории будет иметь законное право прогнать Вас.
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Категория 3 -->
+                <div class="tab-content" id="tab-3" style="display: none;">
+                    <div class="rule-item" onclick="toggleRule(this)">
+                        <div class="rule-header">
+                            <span class="rule-title">3.1. Непрямое убийство игроков (Лава, огонь, ловушки)</span>
+                            <span class="rule-badge badge-ban">Бан 1-10 ч</span>
+                            <span class="rule-arrow">▼</span>
+                        </div>
+                        <div class="rule-body">
+                            Убийство Игроков с помощью лавы, огня и других скрытых методов без их явного согласия категорически запрещено. Наказывается баном от 1 часа до 10 часов.
+                        </div>
+                    </div>
+                    <div class="rule-item" onclick="toggleRule(this)">
+                        <div class="rule-header">
+                            <span class="rule-title">3.2. Беспричинное ПВП / Убийство игроков</span>
+                            <span class="rule-badge badge-ban">Бан 1-10 ч</span>
+                            <span class="rule-arrow">▼</span>
+                        </div>
+                        <div class="rule-body">
+                            Запрещается без веской причины или обоюдного согласия убивать Игроков. Наказывается баном от 1 часа до 10 часов.
+                        </div>
+                    </div>
+                    <div class="rule-item" onclick="toggleRule(this)">
+                        <div class="rule-header">
+                            <span class="rule-title">3.2.1. Блокировка и застройка Незер-порталов</span>
+                            <span class="rule-badge badge-ban">Бан 1-10 ч</span>
+                            <span class="rule-arrow">▼</span>
+                        </div>
+                        <div class="rule-body">
+                            Застроенные Незер-порталы, из которых игроку невозможно выбраться самостоятельно, также приравниваются к нарушению правил и наказываются баном от 1 часа до 10 часов.
+                        </div>
+                    </div>
+                    <div class="rule-item" onclick="toggleRule(this)">
+                        <div class="rule-header">
+                            <span class="rule-title">3.3. Дюп и использование багов игры</span>
+                            <span class="rule-badge badge-ban">Бан 1-3 дня</span>
+                            <span class="rule-arrow">▼</span>
+                        </div>
+                        <div class="rule-body">
+                            Запрещён дюп предметов в любом виде (Исключение составляет легальный дюп активированного динамита для ферм), а также злоупотребление серьезными недоработками игры. Наказывается баном на 1-3 дня.
+                        </div>
+                    </div>
+                    <div class="rule-item" onclick="toggleRule(this)">
+                        <div class="rule-header">
+                            <span class="rule-title">3.4. Помехи игровому процессу (Троллинг)</span>
+                            <span class="rule-badge badge-ban">Бан 1-10 ч</span>
+                            <span class="rule-arrow">▼</span>
+                        </div>
+                        <div class="rule-body">
+                            Запрещается намеренно мешать игрокам без их согласия (Толкать, препятствовать строительству, подбирать чужие добытые блоки, красть ресурсы из-под носа и т.п.). Наказывается баном от 1 часа до 10 часов.
+                        </div>
+                    </div>
+                    <div class="rule-item" onclick="toggleRule(this)">
+                        <div class="rule-header">
+                            <span class="rule-title">3.5. Несанкционированный вызов рейдов</span>
+                            <span class="rule-badge badge-ban">Бан 1-10 ч</span>
+                            <span class="rule-arrow">▼</span>
+                        </div>
+                        <div class="rule-body">
+                            Вызов и запуск рейда на чужую деревню или частную территорию без предварительного согласия её законного владельца запрещён. Наказывается баном от 1 часа до 10 часов.
+                        </div>
+                    </div>
+                    <div class="rule-item" onclick="toggleRule(this)">
+                        <div class="rule-header">
+                            <span class="rule-title">3.6. Локальные правила городов и поселений</span>
+                            <span class="rule-badge badge-info">Инфо</span>
+                            <span class="rule-arrow">▼</span>
+                        </div>
+                        <div class="rule-body">
+                            Владелец поселения или города имеет полное право устанавливать свои собственные внутренние законы на его территории, при условии, что они распространяются только на официальных жителей этого города и были одобрены Администрацией.
+                        </div>
+                    </div>
+                    <div class="rule-item" onclick="toggleRule(this)">
+                        <div class="rule-header">
+                            <span class="rule-title">3.6.1. Автоматическое гражданство поселений</span>
+                            <span class="rule-badge badge-info">Инфо</span>
+                            <span class="rule-arrow">▼</span>
+                        </div>
+                        <div class="rule-body">
+                            Игрок, построивший своё жилище или базу в непосредственной близости от существующего поселения или крупного города, автоматически признаётся его жителем и обязуется соблюдать локальные правила этого места.
+                        </div>
+                    </div>
+                    <div class="rule-item" onclick="toggleRule(this)">
+                        <div class="rule-header">
+                            <span class="rule-title">3.7. Ограничения на мультиаккаунты (Твинки)</span>
+                            <span class="rule-badge badge-info">Макс. 2 окна</span>
+                            <span class="rule-arrow">▼</span>
+                        </div>
+                        <div class="rule-body">
+                            Разрешено иметь и использовать неограниченное общее количество вторичных аккаунтов для личных целей, однако одновременно находиться в игровом мире на сервере разрешено максимум с двух аккаунтов.
+                        </div>
+                    </div>
+                    <div class="rule-item" onclick="toggleRule(this)">
+                        <div class="rule-header">
+                            <span class="rule-title">3.8. Использование прогрузчиков чанков</span>
+                            <span class="rule-badge badge-info">По согласованию</span>
+                            <span class="rule-arrow">▼</span>
+                        </div>
+                        <div class="rule-body">
+                            Создание и перманентное использование технических прогрузчиков чанков разрешено игрокам только после детального обсуждения и согласования с Администрацией проекта.
+                        </div>
+                    </div>
+                    <div class="rule-item" onclick="toggleRule(this)">
+                        <div class="rule-header">
+                            <span class="rule-title">3.9. Коммерция за реальные деньги (РМТ)</span>
+                            <span class="rule-badge badge-ban">Пермач / 50 дн</span>
+                            <span class="rule-arrow">▼</span>
+                        </div>
+                        <div class="rule-body">
+                            Категорически запрещена покупка, продажа или обмен любых игровых ресурсов, ценностей, валюты и предметов за реальные деньги, услуги или криптовалюту. Карается баном от 50 дней до вечной блокировки.
+                        </div>
+                    </div>
+                    <div class="rule-item" onclick="toggleRule(this)">
+                        <div class="rule-header">
+                            <span class="rule-title">3.10. Безобидный юмор и пранки</span>
+                            <span class="rule-badge badge-info">Разрешено</span>
+                            <span class="rule-arrow">▼</span>
+                        </div>
+                        <div class="rule-body">
+                            Любые безобидные пранки, шутки и добрые розыгрыши над друзьями, которые не наносят необратимого вреда имуществу, постройкам и ресурсам игроков, полностью разрешены и приветствуются.
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Категория 4 -->
+                <div class="tab-content" id="tab-4" style="display: none;">
+                    <div class="rule-item" onclick="toggleRule(this)">
+                        <div class="rule-header">
+                            <span class="rule-title">4.1. Культура речи в глобальном чате</span>
+                            <span class="rule-badge badge-mut">Мут 10м - 2ч</span>
+                            <span class="rule-arrow">▼</span>
+                        </div>
+                        <div class="rule-body">
+                            Запрещено использование нецензурной брани, мата, ругательств, оскорбительных слов и выражений в глобальном чате, никах игроков/мобов, на табличках, постройках, книгах и в названиях регионов на любых языках, включая завуалированный вид.
+                        </div>
+                    </div>
+                    <div class="rule-item" onclick="toggleRule(this)">
+                        <div class="rule-header">
+                            <span class="rule-title">4.1.1. Правила локального чата и личных сообщений</span>
+                            <span class="rule-badge badge-mut">Мут 10м - 2ч</span>
+                            <span class="rule-arrow">▼</span>
+                        </div>
+                        <div class="rule-body">
+                            Разрешены мат и экспрессивные ругательства в локальном чате (рядом с игроком) и личных сообщениях (/msg), но они крайне нежелательны. Чрезмерное, спамное или неуместное их использование также повлечет за собой мут.
+                        </div>
+                    </div>
+                    <div class="rule-item" onclick="toggleRule(this)">
+                        <div class="rule-header">
+                            <span class="rule-title">4.1.2. Исключения из языковых ограничений</span>
+                            <span class="rule-badge badge-info">Инфо</span>
+                            <span class="rule-arrow">▼</span>
+                        </div>
+                        <div class="rule-body">
+                            Любые специфические исключения из пункта правил 4.1 могут быть в частном порядке согласованы с Администрацией сервера. Важно: это послабление никогда не касается публичного глобального чата.
+                        </div>
+                    </div>
+                    <div class="rule-item" onclick="toggleRule(this)">
+                        <div class="rule-header">
+                            <span class="rule-title">4.2. Запрет дискриминации и ксенофобии</span>
+                            <span class="rule-badge badge-ban">Строгий бан</span>
+                            <span class="rule-arrow">▼</span>
+                        </div>
+                        <div class="rule-body">
+                            Любая дискриминация, разжигание ненависти или токсичное поведение по какому-либо признаку строго запрещены. Это включает расу, национальность, этническую принадлежность, сексуальную ориентацию, цвет кожи, религию, пол или гендер.
+                        </div>
+                    </div>
+                    <div class="rule-item" onclick="toggleRule(this)">
+                        <div class="rule-header">
+                            <span class="rule-title">4.3. Оскорбления, угрозы и шантаж</span>
+                            <span class="rule-badge badge-ban">Мут / Бан 1-3д</span>
+                            <span class="rule-arrow">▼</span>
+                        </div>
+                        <div class="rule-body">
+                            Оскорбления личности, прямые угрозы расправой, шантаж и подчеркнуто неуважительное поведение в отношении игроков, Администрации или Модерации сервера, а также других групп лиц запрещены. Наказывается мутом или баном на 1-3 дня.
+                        </div>
+                    </div>
+                    <div class="rule-item" onclick="toggleRule(this)">
+                        <div class="rule-header">
+                            <span class="rule-title">4.4. Флуд, капс и спам в чате</span>
+                            <span class="rule-badge badge-mut">Мут 10м - 2ч</span>
+                            <span class="rule-arrow">▼</span>
+                        </div>
+                        <div class="rule-body">
+                            Запрещён агрессивный флуд (повторение однотипных фраз), злоупотребление верхним регистром (КАПС) и массовый спам сообщениями без веской на то причины. Наказывается мутом от 10 минут до 2 часов.
+                        </div>
+                    </div>
+                    <div class="rule-item" onclick="toggleRule(this)">
+                        <div class="rule-header">
+                            <span class="rule-title">4.5. Реклама сторонних ресурсов</span>
+                            <span class="rule-badge badge-ban">Мут / Бан 1-3д</span>
+                            <span class="rule-arrow">▼</span>
+                        </div>
+                        <div class="rule-body">
+                            Категорически запрещена прямая реклама сторонних игровых серверов, коммерческих проектов и услуг, связанных с игрой Minecraft, без согласования. Наказывается мутом или баном от 1 до 3 дней.
+                        </div>
+                    </div>
+                    <div class="rule-item" onclick="toggleRule(this)">
+                        <div class="rule-header">
+                            <span class="rule-title">4.6. Приоритет личных каналов связи</span>
+                            <span class="rule-badge badge-info">Рекомендация</span>
+                            <span class="rule-arrow">▼</span>
+                        </div>
+                        <div class="rule-body">
+                            Для комфортного личного и приватного общения между игроками настоятельно рекомендуется использовать локальный чат либо системные команды личных сообщений (Команды: /msg, /tell), чтобы не засорять глобальный эфир.
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Категория 5 -->
+                <div class="tab-content" id="tab-5" style="display: none;">
+                    <div class="rule-item" onclick="toggleRule(this)">
+                        <div class="rule-header">
+                            <span class="rule-title">5.1. Нагрузка на сервер и создание лаг-зон</span>
+                            <span class="rule-badge badge-ban">Предупр. / Бан</span>
+                            <span class="rule-arrow">▼</span>
+                        </div>
+                        <div class="rule-body">
+                            Запрещено дестабилизировать работу, вызывать падения сервера, создавать критические лаг-зоны (Строительство гигантских неоптимизированных ферм, разведение огромного количества мобов в одном месте). Подобные технические проекты рекомендуется заранее согласовывать с Администрацией, иначе зона будет заморожена или удалена, а владелец получит предупреждение или бан на 1-3 дня.
+                        </div>
+                    </div>
+                    <div class="rule-item" onclick="toggleRule(this)">
+                        <div class="rule-header">
+                            <span class="rule-title">5.2. Использование читов и запрещенных модов</span>
+                            <span class="rule-badge badge-ban">Бан 30-45 дней</span>
+                            <span class="rule-arrow">▼</span>
+                        </div>
+                        <div class="rule-body">
+                            Запрещено использование сторонних вредоносных программ (Читов), ресурспаков с рентгеном (X-Ray) и модов, радикально упрощающих игровой процесс. <br><strong>Полностью разрешённые модификации:</strong> OptiFine/Sodium, Litematica/Schematica, MiniHUD, Light Level Overlay, AFKPeace/AutoReconnect. Нарушение влечет Бан от 30 до 45 дней.
+                        </div>
+                    </div>
+                    <div class="rule-item" onclick="toggleRule(this)">
+                        <div class="rule-header">
+                            <span class="rule-title">5.3. Обман игроков и Администрации</span>
+                            <span class="rule-badge badge-ban">Бан 3-10д / Перм</span>
+                            <span class="rule-arrow">▼</span>
+                        </div>
+                        <div class="rule-body">
+                            Запрещены любые намеренные попытки крупного обмана игроков, введение в заблуждение Администрации или Модерации проекта. Наказывается баном на срок от 3 до 10 дней, а при жестоком или масштабном обмане — перманентной блокировкой.
+                        </div>
+                    </div>
+                    <div class="rule-item" onclick="toggleRule(this)">
+                        <div class="rule-header">
+                            <span class="rule-title">5.4. Клевета и подрыв репутации проекта</span>
+                            <span class="rule-badge badge-ban">Мут / Бан 1-3д</span>
+                            <span class="rule-arrow">▼</span>
+                        </div>
+                        <div class="rule-body">
+                            Запрещена намеренная клевета на честных игроков, представителей Администрации или Модерации, а также распространение ложных деструктивных слухов о самом сервере. Наказывается мутом на 2 часа или баном на 1-3 дня на усмотрение Администратора.
+                        </div>
+                    </div>
+                    <div class="rule-item" onclick="toggleRule(this)">
+                        <div class="rule-header">
+                            <span class="rule-title">5.5. Запрещенная символика и лозунги</span>
+                            <span class="rule-badge badge-ban">Бан 3-10 дней</span>
+                            <span class="rule-arrow">▼</span>
+                        </div>
+                        <div class="rule-body">
+                            Запрещено использование деструктивной символики, экстремистских лозунгов, а также прямая демонстративная поддержка личностей, продвигающих или открыто оправдывающих действия, запрещенные пунктом дискриминации 4.2. Нарушение влечет Бан на 3-10 дней.
+                        </div>
+                    </div>
+                    <div class="rule-item" onclick="toggleRule(this)">
+                        <div class="rule-header">
+                            <span class="rule-title">5.5.1. Использование спорной символики</span>
+                            <span class="rule-badge badge-ban">Бан 3-10 дней</span>
+                            <span class="rule-arrow">▼</span>
+                        </div>
+                        <div class="rule-body">
+                            Использование любой спорной символики (Имеющей двоякое или неопределенное значение, которое может восприниматься как в положительном, так и в резко отрицательном ключе) крайне нежелательно, так как потенциально попадает под нарушение пункта 5.5 и карается баном от 3 до 10 дней.
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
     <footer>
-        <p>&copy; 2026 Night City Minecraft Project. Все права защищены.</p>
-        <p class="credits">Powered by <span>Humanns9779</span> &bull; Style: <span class="brand">Humanns</span></p>
+        <p>&copy; 2026 Night City. Все права защищены. Проект не связан с Mojang AB.</p>
     </footer>
 
-    <div class="toast" id="toast" role="status" aria-live="polite"></div>
-
     <script>
-        (function () {
-            'use strict';
-
-            var SERVER_IP = 'NightCity.wellduck.org';
-            var REFRESH_MS = 30000;
-
-            var wrapper = document.getElementById('status-wrapper');
-            var textEl = document.getElementById('status-text');
-            var toast = document.getElementById('toast');
-            var toastTimer;
-            var timer;
-
-            function setStatus(state, text) {
-                wrapper.dataset.state = state;
-                textEl.textContent = text;
-            }
-
-            // Несколько независимых API: если один недоступен, пробуем следующий
-            var PROVIDERS = [
-                'https://api.mcstatus.io/v2/status/java/' + encodeURIComponent(SERVER_IP),
-                'https://api.mcsrvstat.us/3/' + encodeURIComponent(SERVER_IP)
-            ];
-
-            async function fetchJSON(url) {
-                var controller = new AbortController();
-                var abortTimer = setTimeout(function () { controller.abort(); }, 8000);
-                try {
-                    var res = await fetch(url, { signal: controller.signal, cache: 'no-store' });
-                    if (!res.ok) throw new Error('HTTP ' + res.status);
-                    return await res.json();
-                } finally {
-                    clearTimeout(abortTimer);
-                }
-            }
-
-            async function checkServerStatus() {
-                for (var i = 0; i < PROVIDERS.length; i++) {
-                    try {
-                        var data = await fetchJSON(PROVIDERS[i]);
-                        if (typeof data.online !== 'boolean') throw new Error('Неожиданный ответ API');
-
-                        if (data.online) {
-                            var p = data.players || {};
-                            setStatus('online', 'В сети: ' + (p.online || 0) + ' / ' + (p.max || 0));
-                        } else {
-                            setStatus('offline', 'Сервер оффлайн');
-                        }
-                        return;
-                    } catch (err) {
-                        console.warn('Статус: провайдер ' + (i + 1) + ' не ответил —', err);
-                    }
-                }
-                setStatus('error', 'Статус недоступен');
-            }
-
-            // Клик по статусу — проверить вручную
-            wrapper.style.cursor = 'pointer';
-            wrapper.title = 'Нажмите, чтобы обновить';
-            wrapper.addEventListener('click', function () {
-                setStatus('loading', 'Проверяем сервер…');
-                checkServerStatus();
+        function copyIP() {
+            const ipAddress = "NightCity.wellduck.org";
+            const btn = document.getElementById("ipBtn");
+            
+            navigator.clipboard.writeText(ipAddress).then(() => {
+                btn.innerText = "✓ IP скопирован!";
+                btn.classList.add("copied");
+                
+                setTimeout(() => {
+                    btn.innerText = "Скопировать IP";
+                    btn.classList.remove("copied");
+                }, 2000);
+            }).catch(err => {
+                console.error('Ошибка копирования: ', err);
             });
+        }
 
-            function startPolling() {
-                checkServerStatus();
-                timer = setInterval(checkServerStatus, REFRESH_MS);
+        function toggleRules(show) {
+            const modal = document.getElementById("rulesModal");
+            if (show) {
+                modal.classList.add("active");
+                document.body.style.overflow = "hidden";
+            } else {
+                modal.classList.remove("active");
+                document.body.style.overflow = "auto";
             }
+        }
 
-            // Не опрашиваем API, пока вкладка неактивна
-            document.addEventListener('visibilitychange', function () {
-                clearInterval(timer);
-                if (!document.hidden) startPolling();
+        // Логика работы табов (категорий правил)
+        function switchTab(tabIndex) {
+            const tabs = document.querySelectorAll('.tab-btn');
+            const contents = document.querySelectorAll('.tab-content');
+            
+            tabs.forEach((tab, index) => {
+                if (index === (tabIndex - 1)) tab.classList.add('active');
+                else tab.classList.remove('active');
             });
-            startPolling();
+            
+            contents.forEach(content => {
+                content.style.display = 'none';
+            });
+            
+            document.getElementById(`tab-${tabIndex}`).style.display = 'block';
+            
+            // Сворачиваем все открытые правила при смене таба
+            document.querySelectorAll('.rule-item.expanded').forEach(item => {
+                item.classList.remove('expanded');
+            });
+        }
 
-            function showToast(message) {
-                toast.textContent = message;
-                toast.classList.add('show');
-                clearTimeout(toastTimer);
-                toastTimer = setTimeout(function () { toast.classList.remove('show'); }, 3000);
+        // Логика раскрытия/аккордеона для каждой плашки правила
+        function toggleRule(element) {
+            const isExpanded = element.classList.contains('expanded');
+            
+            // Опционально: закрывать другие правила в этой вкладке при открытии нового
+            const currentTab = element.closest('.tab-content');
+            currentTab.querySelectorAll('.rule-item').forEach(item => {
+                item.classList.remove('expanded');
+            });
+            
+            if (!isExpanded) {
+                element.classList.add('expanded');
             }
+        }
 
-            function fallbackCopy(text) {
-                var area = document.createElement('textarea');
-                area.value = text;
-                area.setAttribute('readonly', '');
-                area.style.cssText = 'position:fixed;opacity:0;';
-                document.body.appendChild(area);
-                area.select();
-                var ok = false;
-                try { ok = document.execCommand('copy'); } catch (e) {}
-                document.body.removeChild(area);
-                return ok;
-            }
+        window.addEventListener('keydown', (e) => {
+            if (e.key === 'Escape') toggleRules(false);
+        });
 
-            async function copyIP() {
-                var ip = document.getElementById('server-ip').textContent.trim();
-                var ok = false;
-                try {
-                    await navigator.clipboard.writeText(ip);
-                    ok = true;
-                } catch (e) {
-                    ok = fallbackCopy(ip);
+        async function checkServerStatus() {
+            const container = document.getElementById("serverStatus");
+            const textEl = document.getElementById("statusText");
+            const serverIP = "NightCity.wellduck.org";
+
+            try {
+                const response = await fetch(`https://api.mcsrvstat.us/3/${serverIP}`);
+                if (!response.ok) throw new Error('Network response error');
+                
+                const data = await response.json();
+
+                if (data.online === true) {
+                    container.setAttribute("data-state", "online");
+                    textEl.innerText = `В сети: ${data.players.online} / ${data.players.max}`;
+                } else {
+                    container.setAttribute("data-state", "offline");
+                    textEl.innerText = "Оффлайн";
                 }
-                showToast(ok
-                    ? 'IP скопирован: ' + ip
-                    : 'Не удалось скопировать. IP сервера: ' + ip);
+            } catch (error) {
+                console.error("Status check failed:", error);
+                container.setAttribute("data-state", "error");
+                textEl.innerText = "Ошибка сети";
             }
+        }
 
-            document.getElementById('copy-btn').addEventListener('click', copyIP);
-        })();
+        checkServerStatus();
+        setInterval(checkServerStatus, 60000);
     </script>
 </body>
 </html>
